@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exos cockpit Vue</title>
+    <style>
+        #app {
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 60px;
+        }
+
+        .divstylee {
+            margin: 0 auto;
+            margin-bottom: 30px;
+            height: 30px;
+            width: 30px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <div id="app">
+        <h1>Atelier VueJS</h1>
+        <hr />
+
+        <h2>Exercice 1</h2>
+        <p> {{ firstName }}</p>
+        <input type="text" v-model="firstName">
+        <p>{{ lastName }}</p>
+        <input type="text" v-model="lastName">
+        <!-- Créer un <p> qui affiche la valeur de "firstName"-->
+        <!-- Créer ensuite un input qui modifie la valeur de ce firstName -->
+        <!-- Créer ensuite un autre <p> qui affiche une nouvelle valeur à créer "lastName" -->
+        <!-- Créer ensuite un input qui modifie la valeur de ce lastName -->
+        <hr />
+
+        <h2>Exercice 2</h2>
+        <input type="text" v-model="imgSrc" />
+        <img :src="imgSrc" alt="">
+        <!-- Créer une <img> qui pointe dynamiquement vers la valeur de "imgSrc" -->
+        <!-- Tester le fonctionnement en mettant des liens vers des images -->
+
+        <hr />
+
+        <h2>Exercice 3</h2>
+        <input type="checkbox" @click="showDiv = true" v-model="showDiv"/>
+        <!-- N'afficher la div ci-dessous que quand la checkbox est cochée -->
+        <div v-if="!showDiv">On ne me voit que quand la checkbox est cochée</div>
+        <hr />
+
+        <h2>Exercice 4</h2>
+        <!-- Au clic sur ce bouton, afficher une pop-up qui dit "boop" (ou autre chose) -->
+        <!-- Utiliser "console.log()" -->
+        <!-- Bonus : le faire au hover sur le bouton-->
+        <button @click="boop" @mouseover="boop">Bouton qui fait boop</button>
+        <hr />
+
+        <h2>Exercice 5</h2>
+        <!-- Au clic sur ces boutons, changer la couleur de fond de la div "divstylee" -->
+        <!-- En cliquant sur "rouge" divstylee doit avoir un fond rouge, pareil pour vert et bleu-->
+        <div class="divstylee" :style="{background: colors}" ></div>
+
+        <button @click="colorDiv('red')">Rouge</button>
+        <button @click="colorDiv('green')">Vert</button>
+        <button @click="colorDiv('blue')">Bleu</button>
+        <hr />
+
+        <h2>Exercice 5</h2>
+        <ul>
+            <li v-for="person in people">{{ person }}</li>
+        </ul>
+        <input type="text" v-model="addName">
+        <button @click="addPeople(addName)">Ajoute !</button>
+        <!-- Créer une liste (ul / li) qui affiche les personnes stockées dans la variable "people" -->
+        <!-- Bonus ! Ajouter un input et un bouton qui permet de rajouter des noms dans cette liste -->
+        <hr />
+
+        <h2>Exercice 6</h2>
+        <!-- Créer une propriété calculée "fullName", concaténant firstName et lastName  -->
+        <!-- https://vuejs.org/guide/essentials/computed.html -->
+        <p>
+            Nom complet : {{ fullName }}
+        </p>
+        <hr />
+
+        <h2>Exercice bonus</h2>
+        <ul>
+            <input type="search" @change="inputFilter">
+            <li v-for="person in filteredPeople">{{ person }}</li>
+        </ul>
+
+        <!-- Afficher à nouveau la liste des personnes (ul / li) -->
+        <!-- Cette fois, ajouter un input de recherche qui permet de filtrer les personnes -->
+        <hr />
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    firstName: "Bob",
+                    lastName: "",
+
+                    imgSrc: 'https://i.redd.it/xsk4uvneyfv51.png',
+
+                    showDiv: false,
+
+                    people: ["Alex", "Bob", "Charlotte", "David", "Elodie"],
+                    colors: "",
+                    inputFilter: "",
+                };
+            },
+            computed: {
+                fullName: {
+                    get(){
+                    return this.firstName + ' ' + this.lastName
+                    },
+                },
+                filteredPeople(){
+                    return this.people.filter((element) => {
+                        return element.match(this.inputFilter);
+                    });
+                }
+            },
+            //TODO pourquoi ca fonctionne sans le set ?
+            methods: {
+                boop() {
+                    alert('boop');
+                },
+                colorDiv(color){
+                    this.colors = color;
+                },
+                addPeople(addName){
+                    this.people.push(addName);
+                },
+                searchMethod(e){
+                    console.log(e);
+                }
+
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
